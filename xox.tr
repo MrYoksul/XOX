@@ -1,0 +1,552 @@
+var
+ Anasayfa,oynfrm:TclGameForm;
+ GameImg : TClProImage;
+ PnlBody:TCLPanel;
+ VSB:TCLVertScrollBox;
+ TopLyt,BottomLyt,HorizontalLyt1,HorizontalLyt2,HorizontalLyt3 : TclLayout;
+ Player1Edt,Player2Edt : TClProEdit;
+ bslklbl,NotLbl,siralbl,LblPlayer1,LblPlayer2: TClProLabel;
+ GoGamebtn,BackBtnAnasayfa,BackBtnGame,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9: TClProButton;
+ kazanmases:Single;
+ Player1Puan,Player2Puan Integer;
+ XorY : Boolean;
+ 
+void BackPage
+{
+TclProButton(Anasayfa.clFindComponent('BtnGoBack')).Click;
+Anasayfa.ClHide;
+}
+
+void kazanmasesprcdr
+{
+oynfrm.PlayGameSound(kazanmases);
+}
+ 
+void basadn
+{
+btn1.Text='';
+btn2.Text='';
+btn3.Text='';
+btn4.Text='';
+btn5.Text='';
+btn6.Text='';
+btn7.Text='';
+btn8.Text='';
+btn9.Text='';
+btn1.Enabled=True;
+btn2.Enabled=True;
+btn3.Enabled=True;
+btn4.Enabled=True;
+btn5.Enabled=True;
+btn6.Enabled=True;
+btn7.Enabled=True;
+btn8.Enabled=True;
+btn9.Enabled=True;
+}
+
+void MainPage
+{ 
+Anasayfa = TclGameForm.Create(Self);
+Anasayfa.SetFormColor('#bdbab9','',clGNone);
+
+GameImg = Anasayfa.AddNewProImage(Anasayfa,'GameImg');
+clComponent.SetupComponent(GameImg,'{"Align":"Center","Width":150,"Height":150,"ImgUrl":"https://i.hizliresim.com/58w37q8.jpg","ImgFit":"yes","MarginBottom":270}');
+
+bslklbl = Anasayfa.AddNewProLabel(Anasayfa,'bslklbl','X O X');
+clComponent.SetupComponent(bslklbl,'{"Align":"center","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":200,"Height":50,"MarginBottom":500,"TextSize":50,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,
+"BorderColor":"#008080","BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"center"}');
+
+Player1Edt = Anasayfa.AddNewProEdit(Anasayfa,'Player1Edt','Player 1 Name');
+clComponent.SetupComponent(Player1Edt,'{"Align":"Center","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":200,"Height":50,"MarginBottom":50,"RoundHeight":10,"RoundWidth":10,"BorderColor":"#008080",
+"BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"center"}');
+Player1Edt.MaxLength=20;
+
+Player2Edt = Anasayfa.AddNewProEdit(Anasayfa,'Player2Edt','Player 2 Name');
+clComponent.SetupComponent(Player2Edt,'{"Align":"Center","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":200,"Height":50,"MarginTop":80,"RoundHeight":10,"RoundWidth":10,"BorderColor":"#008080",
+"BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"center"}');
+Player2Edt.MaxLength=20;
+
+GoGamebtn = Anasayfa.AddNewProButton(Anasayfa,'GoGamebtn','Oyuna Geç');
+clComponent.SetupComponent(GoGamebtn,'{"Align":"center","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":200,"Height":50,"MarginTop":200,"TextSize":30,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,
+"BorderColor":"#008080","BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"center"}');
+Anasayfa.AddNewEvent(GoGamebtn,tbeOnClick,'gcskntrl');
+
+BackBtnAnasayfa = Anasayfa.AddNewProButton(Anasayfa,'BackBtn','');
+clComponent.SetupComponent(BackBtnAnasayfa,'{"Align":"None","Width":70,"Height":70,"ImgUrl":"https://img.icons8.com/fluency/48/circled-left.png"}');
+BackBtnAnasayfa.Position.X=1;
+BackBtnAnasayfa.Position.Y=1;
+Anasayfa.AddNewEvent(BackBtnAnasayfa,tbeOnClick,'BackPage');
+
+Anasayfa.Run;
+}
+
+void GoGame
+{
+oynfrm = TclGameForm.Create(Self);
+Player1Puan=0;
+Player2Puan=0;
+
+oynfrm.AddNewEvent(oynfrm,tbeOnFormCloseQuery,'closeQuery');
+
+oynfrm.AddGameAssetFromUrl('https://clomosy.com/demos/win.wav');
+kazanmases= oynfrm.RegisterSound('win.wav');
+oynfrm.SoundIsActive=True;
+
+PnlBody = oynfrm.AddNewProPanel(oynfrm,'PnlBody');
+clComponent.SetupComponent(PnlBody,'{"Align":"Client",
+"BackgroundColor":"#E6E6FA"}');
+
+VSB = oynfrm.AddNewVertScrollBox(PnlBody,'VSB');
+VSB.Align = alClient;
+
+TopLyt = oynfrm.AddNewLayout(VSB,'TopLyt');
+TopLyt.Align=alMostTop;
+TopLyt.Height = TForm(oynfrm).ClientHeight/2;
+
+BottomLyt = oynfrm.AddNewLayout(VSB,'BottomLyt');
+BottomLyt.Align=alTop;
+BottomLyt.Height = (TForm(oynfrm).ClientHeight/2)-20;
+BottomLyt.Width=VSB.Width-20;
+BottomLyt.Margins.Left= 10;
+BottomLyt.Margins.Right= 10;
+BottomLyt.Margins.Top= 10;
+BottomLyt.Margins.Bottom= 10;
+  HorizontalLyt1 = oynfrm.AddNewLayout(BottomLyt,'HorizontalLyt1');
+  HorizontalLyt1.Align=alMostLeft;
+  HorizontalLyt1.Width = BottomLyt.Width/3;
+  HorizontalLyt2= oynfrm.AddNewLayout(BottomLyt,'HorizontalLyt2');
+  HorizontalLyt2.Align=alMostLeft;
+  HorizontalLyt2.Width = BottomLyt.Width/3;
+  HorizontalLyt3 = oynfrm.AddNewLayout(BottomLyt,'HorizontalLyt3');
+  HorizontalLyt3.Align=alLeft;
+  HorizontalLyt3.Width = BottomLyt.Width/3;
+
+NotLbl = oynfrm.AddNewProLabel(TopLyt,'NotLbl','Puanı 10 veya üzeri olan oyunu kazanır');
+clComponent.SetupComponent(NotLbl,'{"Align" : "MostTop","BackgroundColor":"#a80b00","TextColor":"#FFFFFF",
+"Height":28,"TextSize":15,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,"MarginTop":100,"MarginLeft":10,"MarginRight":10,
+"TextVerticalAlign":"center","TextHorizontalAlign":"center"}');
+
+LblPlayer1 = oynfrm.AddNewProLabel(TopLyt,'LblPlayer1','  '+Player1Edt.Text+' : 0');
+clComponent.SetupComponent(LblPlayer1,'{"Align" : "MostTop","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":300,"Height":50,"MarginTop":10,"TextSize":25,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,
+"BorderColor":"#008080","BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"Left","MarginLeft":10,"MarginRight":10}');
+
+LblPlayer2 = oynfrm.AddNewProLabel(TopLyt,'LblPlayer2','  '+Player2Edt.Text+' : 0');
+clComponent.SetupComponent(LblPlayer2,'{"Align" : "MostTop","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":300,"Height":50,"MarginTop":10,"TextSize":25,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,
+"BorderColor":"#008080","BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"Left","MarginLeft":10,"MarginRight":10}');
+
+siralbl = oynfrm.AddNewProLabel(TopLyt,'siralbl',' SIRA : '+Player1Edt.Text+' "X"');
+clComponent.SetupComponent(siralbl,'{"Align" : "Top","BackgroundColor":"#FFF5EE","TextColor":"#008080",
+"Width":200,"Height":28,"MarginTop":10,"TextSize":20,"TextBold":"yes","RoundHeight":10,"RoundWidth":10,
+"BorderColor":"#008080","BorderWidth":3,"TextVerticalAlign":"center","TextHorizontalAlign":"center","MarginLeft":10,"MarginRight":10}');
+
+btn1 = oynfrm.AddNewProButton(HorizontalLyt1,'btn1','');
+clComponent.SetupComponent(btn1,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn1,tbeOnClick,'btnsOnClick');
+
+btn2 = oynfrm.AddNewProButton(HorizontalLyt2,'btn2','');
+clComponent.SetupComponent(btn2,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn2,tbeOnClick,'btnsOnClick');
+
+btn3 = oynfrm.AddNewProButton(HorizontalLyt3,'btn3','');
+clComponent.SetupComponent(btn3,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn3,tbeOnClick,'btnsOnClick');
+
+btn4 = oynfrm.AddNewProButton(HorizontalLyt1,'btn4','');
+clComponent.SetupComponent(btn4,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn4,tbeOnClick,'btnsOnClick');
+
+btn5 = oynfrm.AddNewProButton(HorizontalLyt2,'btn5','');
+clComponent.SetupComponent(btn5,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn5,tbeOnClick,'btnsOnClick');
+
+btn6 = oynfrm.AddNewProButton(HorizontalLyt3,'btn6','');
+clComponent.SetupComponent(btn6,'{"Align" : "MostTop","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn6,tbeOnClick,'btnsOnClick');
+
+btn7 = oynfrm.AddNewProButton(HorizontalLyt1,'btn7','');
+clComponent.SetupComponent(btn7,'{"Align" : "Top","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn7,tbeOnClick,'btnsOnClick');
+
+btn8 = oynfrm.AddNewProButton(HorizontalLyt2,'btn8','');
+clComponent.SetupComponent(btn8,'{"Align" : "Top","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn8,tbeOnClick,'btnsOnClick');
+
+btn9 = oynfrm.AddNewProButton(HorizontalLyt3,'btn9','');
+clComponent.SetupComponent(btn9,'{"Align" : "Top","Width":'+IntToStr(BottomLyt.Width/3)+',"Height":'+IntToStr(BottomLyt.Height/3)+', 
+"BackgroundColor":"#FFFFFF", "RoundHeight":3,"RoundWidth":3,"BorderColor":"#000000","BorderWidth":2,"TextSize":50}');
+oynfrm.AddNewEvent(btn9,tbeOnClick,'btnsOnClick');
+
+BackBtnGame = oynfrm.AddNewProButton(oynfrm,'BackBtnGame','');
+clComponent.SetupComponent(BackBtnGame,'{"Align":"None","Width":70,"Height":70,"ImgUrl":"https://img.icons8.com/fluency/48/circled-left.png"}');
+BackBtnGame.Position.X=1;
+BackBtnGame.Position.Y=1;
+oynfrm.AddNewEvent(BackBtnGame,tbeOnClick,'Hide');
+
+oynfrm.Run;
+}
+
+void RoundWinnerX
+{
+ ShowMessage('SETİ KAZANAN : '+Player1Edt.Text);
+}
+
+void RoundWinnerY
+{
+ ShowMessage('SETİ KAZANAN : '+Player2Edt.Text);
+}
+
+void RoundDraw
+{
+ ShowMessage('SET BERABERE BİTTİ');
+}
+
+void btnsOnClick;
+{
+  if XorY == True   // X Kazandıysa
+  {
+    if siralbl.Text==' SIRA : '+Player1Edt.Text+' "X"' 
+    {
+     TClProButton(oynfrm.clSender).Text ='X';
+     TClProButton(oynfrm.clSender).Enabled=False;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+    }
+    
+    else 
+    {
+     TClProButton(oynfrm.clSender).Text ='O';
+     TClProButton(oynfrm.clSender).Enabled=False;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+    }
+  }
+  
+  else if XorY == False // Y Kazandıysa
+  {
+    if siralbl.Text==' SIRA : '+Player2Edt.Text+' "O"' 
+    {
+     TClProButton(oynfrm.clSender).Text ='O';
+     TClProButton(oynfrm.clSender).Enabled=False;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+    }
+     
+    else 
+    {
+     TClProButton(oynfrm.clSender).Text ='X';
+     TClProButton(oynfrm.clSender).Enabled=False;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+    }
+  }
+   
+  if ((btn1.Text=='X')&&(btn2.Text=='X')&&(btn3.Text=='X'))
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+   }
+  if ((btn4.Text=='X')&&(btn5.Text=='X')&&(btn6.Text=='X')) 
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+    }
+  if ((btn7.Text=='X')&&(btn8.Text=='X')&&(btn9.Text=='X')) 
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+    }
+  if ((btn1.Text=='X')&&(btn4.Text=='X')&&(btn7.Text=='X')) 
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+   }
+  if ((btn2.Text=='X')&&(btn5.Text=='X')&&(btn8.Text=='X'))
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+   }
+  if ((btn3.Text=='X')&&(btn6.Text=='X')&&(btn9.Text=='X'))
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+   }
+  if ((btn1.Text=='X')&&(btn5.Text=='X')&&(btn9.Text=='X')) 
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+    }
+  if ((btn3.Text=='X')&&(btn5.Text=='X')&&(btn7.Text=='X')) 
+   {
+     if Player1Puan < 9  
+     {
+      RoundWinnerX;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     kazanmasesprcdr;
+     Player1Puan=Player1Puan+3;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     XorY=True;
+   } 
+   
+  if ((btn1.Text=='O')&&(btn2.Text=='O')&&(btn3.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn4.Text=='O')&&(btn5.Text=='O')&&(btn6.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn7.Text=='O')&&(btn8.Text=='O')&&(btn9.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn1.Text=='O')&&(btn4.Text=='O')&&(btn7.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn2.Text=='O')&&(btn5.Text=='O')&&(btn8.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn3.Text=='O')&&(btn6.Text=='O')&&(btn9.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn1.Text=='O')&&(btn5.Text=='O')&&(btn9.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  if ((btn3.Text=='O')&&(btn5.Text=='O')&&(btn7.Text=='O')) 
+   {
+     if Player2Puan < 9  
+     {
+      RoundWinnerY;
+     }
+     basadn;
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+     kazanmasesprcdr;
+     Player2Puan=Player2Puan+3;
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     XorY=False;
+   }
+  
+  if ((btn1.Text <>'')&&(btn2.Text <>'')&&(btn3.Text <>'')&&(btn4.Text <>'')&&(btn5.Text <>'')&&(btn6.Text <>'')&&(btn7.Text <>'')&&(btn8.Text <>'')&&(btn9.Text <>''))
+   {
+     if ((Player1Puan < 9) && (Player2Puan < 9) ) 
+     {
+      RoundDraw;
+     }
+     basadn;
+     Player1Puan=Player1Puan+1;
+     Player2Puan=Player2Puan+1;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     
+     if XorY == True 
+     siralbl.Text=' SIRA : '+Player1Edt.Text+' "X"';
+     else
+     siralbl.Text=' SIRA : '+Player2Edt.Text+' "O"';
+   }
+   
+  if ((Player1Puan >=10) &&  (Player2Puan >=10))
+   { 
+     ShowMessage('Kazanan Yok')
+     Player1Puan=0;
+     Player2Puan=0;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     MainPage;
+     oynfrm.ClHide;
+   }   
+  else if (Player1Puan >= 10) 
+   {
+     ShowMessage('Oyunu Kazanan : '+Player1Edt.Text);
+     Player1Puan=0;
+     Player2Puan=0;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     MainPage;
+     oynfrm.ClHide;
+   }
+  else if (Player2Puan >= 10) 
+   {
+     ShowMessage('Oyunu Kazanan : '+Player2Edt.Text);
+     Player1Puan=0;
+     Player2Puan=0;
+     LblPlayer1.Text='  '+Player1Edt.Text+' : '+IntToStr(Player1Puan);
+     LblPlayer2.Text='  '+Player2Edt.Text+' : '+IntToStr(Player2Puan);
+     MainPage;
+     oynfrm.ClHide;
+    }
+}
+
+void gcskntrl
+{
+if ((Player1Edt.Text == '') || (Player2Edt.Text == '')) 
+ {
+  ShowMessage('Kutucukları Doldurunuz');
+ }
+else if Player1Edt.Text == Player2Edt.Text 
+ {
+  ShowMessage('Aynı İsim kullanılamaz');
+ }
+else
+ {
+  GoGame;
+  Anasayfa.ClHide;
+ }
+}
+
+void ProcYesOnClick
+{
+MainPage;
+oynfrm.ClHide;
+}
+
+void Hide
+{
+  clomosy.AskAndCall('Oyundan Çıkmak İstiyormusunuz ? ','ProcYesOnClick','');
+}
+
+void closeQuery
+{
+oynfrm.clCanClose = false;
+Hide;
+}
+
+{
+MainPage;
+XorY=True;
+}
+
+ 
